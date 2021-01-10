@@ -1,31 +1,31 @@
 package com.example.finn.di
 
 import android.content.Context
+import androidx.lifecycle.ViewModel
 import com.example.finn.DiscoverApi
 import com.example.finn.Schedulers
 import com.example.finn.SchedulersImpl
+import com.example.finn.vm.AdViewModel
 import com.squareup.moshi.Moshi
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
+import dagger.multibindings.IntoMap
 import okhttp3.Cache
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import timber.log.Timber
 
 
 @Module(includes = [NetworkModule::class])
-class RetrofitModule() {
+class RetrofitModule {
 
     @Provides
-    fun provideDiscoverApi(retrofit: Retrofit): DiscoverApi {
-        return retrofit.create(DiscoverApi::class.java)
-    }
-
+    fun provideDiscoverApi(retrofit: Retrofit): DiscoverApi =
+        retrofit.create(DiscoverApi::class.java)
 }
 
 @Module(includes = [ContextModule::class, MoshiModule::class, InterceptorModule::class])
@@ -38,7 +38,7 @@ class NetworkModule {
     ): Retrofit = Retrofit
         .Builder()
         .baseUrl("https://gist.githubusercontent.com/baldermork/6a1bcc8f429dcdb8f9196e917e5138bd/raw/a542886ef057c91d822004ed15881f0c25221c18/")
-        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+        .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
         .addConverterFactory(moshiConverter)
         .client(okHttpClient)
         .build()
@@ -90,3 +90,12 @@ abstract class SchedulerModule {
 
 }
 
+@Module
+abstract class ViewModelModule() {
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AdViewModel::class)
+    abstract fun bindAdViewModel(vm: AdViewModel): ViewModel
+
+}
