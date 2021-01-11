@@ -4,10 +4,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.finn.R
 import com.example.finn.data.Item
+import kotlinx.android.synthetic.main.list_item_ad_item.view.*
 
-class AdItemRecyclerAdapter(private var list: List<Item>, onFavClick: (Item) -> Unit) :
+class AdItemRecyclerAdapter(private var list: List<Item>, private val onFavClick: (Item) -> Unit) :
     RecyclerView.Adapter<AdItemRecyclerAdapter.AdItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdItemViewHolder {
@@ -16,9 +18,9 @@ class AdItemRecyclerAdapter(private var list: List<Item>, onFavClick: (Item) -> 
         return AdItemViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: AdItemViewHolder, position: Int) {
-        holder.bind(list[position])
-    }
+    override fun onBindViewHolder(holder: AdItemViewHolder, position: Int) =
+        holder.bind(list[position], onFavClick)
+
 
     override fun getItemCount(): Int = list.size
 
@@ -28,10 +30,14 @@ class AdItemRecyclerAdapter(private var list: List<Item>, onFavClick: (Item) -> 
 
     class AdItemViewHolder(v: View) : RecyclerView.ViewHolder(v) {
 
-        fun bind(item: Item) {
-            TODO("bind view w data and stuff")
+        fun bind(item: Item, onFavClick: (Item) -> Unit) {
+            itemView.tv_ad_location.text = item.location
+            itemView.tv_ad_price.text =
+                itemView.context.getString(R.string.price_kr, item.price?.value)
+            itemView.tv_ad_title.text = item.description
+            Glide.with(itemView).load(item.image?.url).into(itemView.iv_ad_image)
+
+            itemView.iv_favourite.setOnClickListener { onFavClick(item) }
         }
-
     }
-
 }
