@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">finn</string>
-    <string name="price_kr">$1%d kr</string>
+    <string name="price_kr">%1$d kr</string>
 </resources>

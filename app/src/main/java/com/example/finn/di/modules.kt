@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.example.finn.DiscoverApi
 import com.example.finn.Schedulers
 import com.example.finn.SchedulersImpl
+import com.example.finn.data.DiscoverResult
 import com.example.finn.vm.AdViewModel
 import com.squareup.moshi.Moshi
 import dagger.Binds
@@ -87,7 +88,6 @@ abstract class SchedulerModule {
 
     @Binds
     abstract fun bindSchedulers(schedulers: SchedulersImpl): Schedulers
-
 }
 
 @Module

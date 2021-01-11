@@ -8,5 +8,5 @@ interface Schedulers {
 
     fun io(): Scheduler
 
-    fun computer(): Scheduler
+    fun compute(): Scheduler
 }

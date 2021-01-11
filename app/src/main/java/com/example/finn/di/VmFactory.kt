@@ -5,9 +5,10 @@ import androidx.lifecycle.ViewModelProvider
 import javax.inject.Inject
 import javax.inject.Provider
 import javax.inject.Singleton
+import kotlin.reflect.KClass
 
 @Singleton
-class VmFactory @Inject constructor(private val map: Map<Class<out ViewModel>, Provider<ViewModel>>) :
+class VmFactory @Inject constructor(private val map: MutableMap<Class<out ViewModel>, Provider<ViewModel>>) :
     ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

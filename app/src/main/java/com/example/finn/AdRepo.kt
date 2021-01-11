@@ -1,35 +1,26 @@
 package com.example.finn
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.LiveDataReactiveStreams
+import com.example.finn.data.DiscoverResult
+import com.example.finn.data.Item
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import timber.log.Timber
 import javax.inject.Inject
 
 class AdRepo @Inject constructor(
-    private val api: DiscoverApi,
-    private val schedulers: Schedulers
+    private val api: DiscoverApi
 ) {
 
-    private val disposable = CompositeDisposable()
+    var repoResultLiveData: LiveData<DiscoverResult> =
+        LiveDataReactiveStreams.fromPublisher(api.fetchAds())
+        private set
 
-    fun getAds() {
-        disposable.add(api.fetchAds()
-            .subscribeOn(schedulers.io())
-            .observeOn(schedulers.ui())
-            .subscribe(
-                { result ->
-                    Timber.d(result.toString())
-                },
-                { e ->
-                    Timber.e(e)
-                }
-            ))
-    }
 
-    fun saveFavourite(){
+    fun saveFavouriteToDb(item: Item) {
 
     }
 
-    fun clearDisposables() {
-        disposable.clear()
+    fun refreshAdsFromWeb() {
+        repoResultLiveData = LiveDataReactiveStreams.fromPublisher(api.fetchAds())
     }
 }
