@@ -3,7 +3,6 @@ package com.example.finn.vm
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.finn.AdRepo
-import com.example.finn.data.DiscoverResult
 import com.example.finn.data.Item
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -11,13 +10,25 @@ import javax.inject.Singleton
 @Singleton
 class AdViewModel @Inject constructor(private val repo: AdRepo) : ViewModel() {
 
-    val resultLiveData: LiveData<DiscoverResult> = repo.repoResultLiveData
+    val resultLiveData: LiveData<List<Item>> = repo.repoLiveData
 
     fun refreshAds() {
-        repo.refreshAdsFromWeb()
+        repo.pushAdsFromWeb()
+    }
+
+    fun showFavourites() {
+        repo.pushFavourites()
+    }
+
+    fun showAdsWithoutFavourites() {
+        repo.pushAdsMinusFavourites()
+    }
+
+    fun removeFavourite(item: Item){
+        repo.deleteItem(item)
     }
 
     fun saveFavourite(item: Item) {
-        repo.saveFavouriteToDb(item)
+        repo.saveItem(item)
     }
 }

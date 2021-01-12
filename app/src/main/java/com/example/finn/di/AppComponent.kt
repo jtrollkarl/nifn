@@ -5,7 +5,7 @@ import dagger.Component
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [RetrofitModule::class, SchedulerModule::class, ViewModelModule::class])
+@Component(modules = [RetrofitModule::class, SchedulerModule::class, ViewModelModule::class, DatabaseModule::class])
 interface AppComponent {
     fun inject(fragment: AdListFragment)
 }

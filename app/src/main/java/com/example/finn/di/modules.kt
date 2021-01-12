@@ -2,10 +2,11 @@ package com.example.finn.di
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
+import androidx.room.Room
 import com.example.finn.DiscoverApi
 import com.example.finn.Schedulers
 import com.example.finn.SchedulersImpl
-import com.example.finn.data.DiscoverResult
+import com.example.finn.room.AppDatabase
 import com.example.finn.vm.AdViewModel
 import com.squareup.moshi.Moshi
 import dagger.Binds
@@ -56,8 +57,17 @@ class NetworkModule {
     fun provideCache(context: Context) = Cache(context.cacheDir, 10 * 1024 * 1024) //10mb
 }
 
+@Module(includes = [ContextModule::class])
+class DatabaseModule {
+
+    @Provides
+    fun provideDatabase(context: Context): AppDatabase {
+        return Room.databaseBuilder(context, AppDatabase::class.java, "app-db").build()
+    }
+}
+
 @Module
-class InterceptorModule() {
+class InterceptorModule {
     @Provides
     fun provideLoggingInterceptor(): HttpLoggingInterceptor {
         return HttpLoggingInterceptor { message -> Timber.d(message) }.apply {
