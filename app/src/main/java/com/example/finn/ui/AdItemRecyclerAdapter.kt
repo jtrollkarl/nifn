@@ -8,7 +8,6 @@ import com.bumptech.glide.Glide
 import com.example.finn.R
 import com.example.finn.data.Item
 import kotlinx.android.synthetic.main.list_item_ad_item.view.*
-import timber.log.Timber
 
 class AdItemRecyclerAdapter(private var list: List<Item>, private val onFavClick: (Item) -> Unit) :
     RecyclerView.Adapter<AdItemRecyclerAdapter.AdItemViewHolder>() {
@@ -33,10 +32,9 @@ class AdItemRecyclerAdapter(private var list: List<Item>, private val onFavClick
 
         fun bind(item: Item, onFavClick: (Item) -> Unit) {
             itemView.tv_ad_location.text = item.location
-            itemView.tv_ad_price.text =
-                itemView.context.getString(R.string.price_kr, item.price?.value)
+
+            item.price?.let { itemView.tv_ad_price.text = itemView.context.getString(R.string.price_kr, it.value) }
             itemView.tv_ad_title.text = item.description
-            Timber.d("https://images.finncdn.no/dynamic/480x360c/${item.image?.url}")
             Glide.with(itemView).load("https://images.finncdn.no/dynamic/480x360c/${item.image?.url}").into(itemView.iv_ad_image)
 
             itemView.iv_favourite.setOnClickListener { onFavClick(item) }

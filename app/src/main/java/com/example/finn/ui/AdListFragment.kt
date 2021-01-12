@@ -21,8 +21,8 @@ class AdListFragment : Fragment() {
 
     @Inject
     lateinit var vmFactory: VmFactory
-    private lateinit var viewModel: AdViewModel
 
+    private lateinit var viewModel: AdViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
